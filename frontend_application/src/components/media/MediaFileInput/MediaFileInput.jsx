@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./MediaFileInput.module.css";
+import layout from "../../../AppLayout.module.css";
 
 /**
  * Utility to check file type (image/video) via MIME and extension fallback.
@@ -173,7 +174,7 @@ export default function MediaFileInput({
           ref={inputRef}
           type="file"
           accept={accept}
-          className="visuallyHidden"
+          className={layout.visuallyHidden}
           onChange={onChange}
           aria-hidden="true"
           tabIndex={-1}

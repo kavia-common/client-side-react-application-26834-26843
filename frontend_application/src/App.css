@@ -1,1 +1,3 @@
-/* Purged default CRA styles. Tailwind is the primary styling system. */
+/* Base file retained intentionally minimal.
+   Styling is handled by CSS Modules in component/page-specific files.
+   Keep empty or add extremely small global resets only if necessary. */

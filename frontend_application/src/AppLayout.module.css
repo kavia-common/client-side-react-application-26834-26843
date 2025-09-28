@@ -70,7 +70,7 @@
   color: #6b7280;
 }
 
-/* utils */
+/* Module-scoped utilities for layout cards and containers */
 .container {
   max-width: 1280px;
   margin: 0 auto;
@@ -82,4 +82,15 @@
   border-radius: 8px;
   box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
   padding: 16px;
+}
+
+/* Hidden input utility (scoped) for components that need it */
+.visuallyHidden {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
 }

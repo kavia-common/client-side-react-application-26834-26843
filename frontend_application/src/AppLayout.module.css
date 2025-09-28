@@ -7,6 +7,11 @@
   --surface: #FFFFFF;
   --text: #111827;
   --border: #E5E7EB;
+
+  /* layout tokens */
+  --sidebar-width: 256px;
+  --sidebar-width-narrow: 220px;
+  --sidebar-transition: 240ms ease;
 }
 
 .appShell {
@@ -14,6 +19,16 @@
   display: flex;
   background: var(--background);
   color: var(--text);
+  /* allow smooth shifting when sidebar open/close */
+  transition: padding-left var(--sidebar-transition);
+}
+
+.withSidebar {
+  /* no extra padding; sidebar is part of flex layout */
+}
+
+.sidebarCollapsed {
+  /* when sidebar is collapsed we rely on translate of the aside; main stays full */
 }
 
 .mainArea {
@@ -26,7 +41,7 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
@@ -38,6 +53,46 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.iconButton {
+  border: 1px solid var(--border);
+  background: #ffffff;
+  height: 34px;
+  width: 38px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.hamburger {
+  width: 18px;
+  height: 14px;
+  position: relative;
+  display: inline-block;
+}
+.hamburger span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #111827;
+  border-radius: 2px;
+  transition: transform var(--sidebar-transition), opacity var(--sidebar-transition);
+}
+.hamburger span:nth-child(1) { top: 0; }
+.hamburger span:nth-child(2) { top: 6px; }
+.hamburger span:nth-child(3) { top: 12px; }
+
+.hamburgerVisible {
+  /* no-op class for semantic readability; kept for potential state styling */
 }
 
 .appTitle {
@@ -93,4 +148,11 @@
   height: 1px !important;
   width: 1px !important;
   overflow: hidden;
+}
+
+/* Responsive: slightly narrower sidebar breakpoint */
+@media (max-width: 900px) {
+  :root {
+    --sidebar-width: var(--sidebar-width-narrow);
+  }
 }

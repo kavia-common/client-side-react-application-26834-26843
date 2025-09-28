@@ -1,11 +1,26 @@
 .sidebar {
-  width: 256px;
+  width: var(--sidebar-width, 256px);
   flex-shrink: 0;
   border-right: 1px solid #E5E7EB;
   background: #FFFFFF;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
+  /* slide-in/out */
+  transform: translateX(0);
+  transition: transform var(--sidebar-transition, 240ms ease);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.closed {
+  transform: translateX(calc(-1 * var(--sidebar-width, 256px)));
 }
 
 .brand {
@@ -14,6 +29,20 @@
   gap: 12px;
   padding: 16px;
   border-bottom: 1px solid #E5E7EB;
+  position: relative;
+}
+
+.closeButton {
+  margin-left: auto;
+  border: 1px solid #E5E7EB;
+  background: #FFFFFF;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  color: #374151;
+  cursor: pointer;
+  line-height: 1;
+  display: none; /* hidden on desktop, shown on small screens */
 }
 
 .brandMark {
@@ -91,8 +120,13 @@
   gap: 4px;
 }
 
+/* Tablet and below: slightly narrower width and enable close button */
 @media (max-width: 900px) {
   .sidebar {
-    width: 220px;
+    width: var(--sidebar-width, 220px);
+  }
+  .closeButton {
+    display: inline-grid;
+    place-items: center;
   }
 }

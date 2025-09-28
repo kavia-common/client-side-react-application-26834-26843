@@ -1,67 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import styles from "./AnalysisPage.module.css";
+import { useAnalysis } from "../../hooks/useAnalysis";
 
-/**
- * Fake API to fetch YOLO-like detection results for the latest media.
- * Returns boxes in normalized [0..1] coordinates for width/height proportional overlay.
- */
-function fakeFetchDetections() {
-  // Simulate API latency
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // A small mock list including items below threshold to be filtered
-      resolve({
-        media: {
-          // The demo uses a stock image if no prior upload exists.
-          // In a real app this would point to the latest uploaded media path.
-          url:
-            "https://images.unsplash.com/photo-1558981033-0f30ed1911c0?q=80&w=1200&auto=format&fit=crop",
-          kind: "image",
-          width: 1200,
-          height: 800,
-          uploadedAt: new Date().toISOString(),
-        },
-        detections: [
-          {
-            id: "1",
-            label: "bear",
-            conf: 0.91,
-            state: "resting",
-            // x, y, w, h are normalized [0..1]
-            box: { x: 0.12, y: 0.22, w: 0.22, h: 0.18 },
-            ts: Date.now() - 12000,
-          },
-          {
-            id: "2",
-            label: "bear",
-            conf: 0.84,
-            state: "moving",
-            box: { x: 0.55, y: 0.30, w: 0.27, h: 0.35 },
-            ts: Date.now() - 9000,
-          },
-          {
-            id: "3",
-            label: "bear",
-            conf: 0.63, // Should be filtered out by threshold 0.7
-            state: "moving",
-            box: { x: 0.40, y: 0.62, w: 0.16, h: 0.14 },
-            ts: Date.now() - 6000,
-          },
-        ],
-      });
-    }, 550);
-  });
-}
-
-/**
- * Color map by mobility state.
- * - resting => blue
- * - moving => gold
- */
+/** Helper: color by state */
 function stateColor(state) {
   return state === "moving" ? "#F59E0B" : "#1E3A8A";
 }
-
 function formatTs(ts) {
   try {
     return new Date(ts).toLocaleString();
@@ -73,37 +17,19 @@ function formatTs(ts) {
 // PUBLIC_INTERFACE
 export default function AnalysisPage() {
   /**
-   * Analysis page
-   * - Fetch mock detections via fake API
-   * - Show latest media (image/video) with overlay boxes for conf ≥ threshold
-   * - Each box shows probability and mobility label
-   * - Responsive side panel lists detection metadata
+   * Analysis page using useAnalysis hook for fetching/filtering logic.
    */
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [media, setMedia] = useState(null);
-  const [detections, setDetections] = useState([]);
-  const [threshold, setThreshold] = useState(0.7);
+  const {
+    media,
+    visibleDetections,
+    loading,
+    error,
+    threshold,
+    setThreshold,
+  } = useAnalysis(0.7);
 
   const containerRef = useRef(null);
   const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
-
-  // Fetch mock data
-  useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-    fakeFetchDetections()
-      .then((data) => {
-        if (!isMounted) return;
-        setMedia(data.media);
-        setDetections(data.detections || []);
-      })
-      .catch((e) => isMounted && setError(e?.message || "Failed to load"))
-      .finally(() => isMounted && setLoading(false));
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   // Resize observer to track preview area size for absolute overlays
   useEffect(() => {
@@ -119,33 +45,20 @@ export default function AnalysisPage() {
     return () => obs.disconnect();
   }, []);
 
-  // Filter detections by threshold and class 'bear'
-  const visibleDetections = useMemo(() => {
-    return detections.filter(
-      (d) => d.label === "bear" && (d.conf ?? 0) >= threshold
-    );
-  }, [detections, threshold]);
-
   // Compute positioned boxes in pixels from normalized coordinates
   const positionedBoxes = useMemo(() => {
     if (!media || !containerSize.w || !containerSize.h) return [];
-    // We assume media is letterboxed inside the container maintaining aspect ratio.
-    // We'll compute the displayed media rect to translate normalized coordinates.
     const containerAspect = containerSize.w / containerSize.h;
     const mediaAspect =
-      media && media.width && media.height
-        ? media.width / media.height
-        : 16 / 9;
+      media && media.width && media.height ? media.width / media.height : 16 / 9;
 
     let drawW, drawH, offsetX, offsetY;
     if (mediaAspect > containerAspect) {
-      // Media wider than container: limit by width
       drawW = containerSize.w;
       drawH = drawW / mediaAspect;
       offsetX = 0;
       offsetY = (containerSize.h - drawH) / 2;
     } else {
-      // Media taller: limit by height
       drawH = containerSize.h;
       drawW = drawH * mediaAspect;
       offsetX = (containerSize.w - drawW) / 2;
@@ -203,11 +116,7 @@ export default function AnalysisPage() {
             {!loading && !error && media && (
               <>
                 {media.kind === "image" ? (
-                  <img
-                    src={media.url}
-                    alt="Analyzed"
-                    className={styles.media}
-                  />
+                  <img src={media.url} alt="Analyzed" className={styles.media} />
                 ) : (
                   <video
                     className={styles.media}

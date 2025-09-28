@@ -1,21 +1,21 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import styles from "./ImportPage.module.css";
 import MediaFileInput from "../../components/media/MediaFileInput/MediaFileInput";
+import { useMediaContext } from "../../context/MediaContext";
 
 // PUBLIC_INTERFACE
 export default function ImportPage() {
   /**
-   * Import Media page with:
-   * - Reusable file input for image/video
-   * - Mock upload progress
-   * - Live preview
-   * - Simple recent imports list (in-memory)
+   * Import Media page using MediaContext to persist uploaded items app-wide.
    */
-  const [recent, setRecent] = useState([]);
+  const { uploaded, addUploaded } = useMediaContext();
 
-  const handleUploaded = useCallback((meta) => {
-    setRecent((prev) => [meta, ...prev].slice(0, 5));
-  }, []);
+  const handleUploaded = useCallback(
+    (meta) => {
+      addUploaded(meta);
+    },
+    [addUploaded]
+  );
 
   return (
     <div className={styles.container}>
@@ -36,12 +36,13 @@ export default function ImportPage() {
         <div className={styles.card}>
           <h3 className={styles.cardTitle}>Recent Imports</h3>
           <ul className={styles.list}>
-            {recent.length === 0 && <li>No recent items yet.</li>}
-            {recent.map((r) => (
+            {uploaded.length === 0 && <li>No recent items yet.</li>}
+            {uploaded.slice(0, 5).map((r) => (
               <li key={r.id}>
                 <span style={{ fontWeight: 600 }}>{r.name}</span>{" "}
                 <span style={{ color: "#6B7280" }}>
-                  • {(r.size / (1024 * 1024)).toFixed(2)} MB • {new Date(r.uploadedAt).toLocaleTimeString()}
+                  • {(r.size / (1024 * 1024)).toFixed(2)} MB •{" "}
+                  {new Date(r.uploadedAt).toLocaleTimeString()}
                 </span>
               </li>
             ))}

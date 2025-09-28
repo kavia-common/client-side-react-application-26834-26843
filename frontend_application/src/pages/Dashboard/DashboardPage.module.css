@@ -1,0 +1,54 @@
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.subtitle {
+  margin: 6px 0 0 0;
+  color: #6B7280;
+  font-size: 14px;
+}
+
+.grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+  padding: 16px;
+}
+
+.cardTitle {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chartPlaceholder {
+  height: 256px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(30,58,138,0.08), rgba(245,158,11,0.12));
+  display: grid;
+  place-items: center;
+  color: #6B7280;
+  font-size: 14px;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

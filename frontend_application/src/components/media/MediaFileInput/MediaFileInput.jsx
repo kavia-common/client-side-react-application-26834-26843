@@ -1,5 +1,4 @@
 import styles from "./MediaFileInput.module.css";
-import layout from "../../../AppLayout.module.css";
 import { useMediaUpload } from "../../../hooks/useMediaUpload";
 
 // PUBLIC_INTERFACE
@@ -54,7 +53,7 @@ export default function MediaFileInput({
           ref={inputRef}
           type="file"
           accept={accept}
-          className={layout.visuallyHidden}
+          className="visually-hidden"
           onChange={onChange}
           aria-hidden="true"
           tabIndex={-1}

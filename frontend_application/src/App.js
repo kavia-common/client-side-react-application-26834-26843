@@ -4,7 +4,6 @@ import Sidebar from "./components/layout/Sidebar/Sidebar";
 import ImportPage from "./pages/Import/ImportPage";
 import AnalysisPage from "./pages/Analysis/AnalysisPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
-import styles from "./AppLayout.module.css";
 import { ApiModeProvider, useApiMode } from "./context/ApiModeContext";
 import { MediaProvider } from "./context/MediaContext";
 
@@ -21,19 +20,19 @@ export default function App() {
     <BrowserRouter>
       <ApiModeProvider initialMode="mock">
         <MediaProvider>
-          <div className={`${styles.appShell} ${sidebarOpen ? styles.withSidebar : styles.sidebarCollapsed}`}>
+          <div className="min-h-screen flex bg-background text-textcolor transition-[padding-left]">
             <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-            <main className={styles.mainArea}>
+            <main className="flex-1 min-w-0 flex flex-col">
               <Header sidebarOpen={sidebarOpen} onToggleSidebar={toggleSidebar} />
-              <section className={styles.content}>
+              <section className="px-4 py-6">
                 <Routes>
                   <Route path="/" element={<ImportPage />} />
                   <Route path="/analysis" element={<AnalysisPage />} />
                   <Route path="/dashboard" element={<DashboardPage />} />
                 </Routes>
               </section>
-              <footer className={styles.footer}>
-                <div className={styles.footerInner}>
+              <footer className="mt-auto border-t border-gray-200 bg-white">
+                <div className="max-w-6xl mx-auto px-4 py-3 text-xs text-gray-500">
                   © {new Date().getFullYear()} Wildlife Monitoring • React Scaffold
                 </div>
               </footer>
@@ -48,41 +47,34 @@ export default function App() {
 function Header({ sidebarOpen, onToggleSidebar }) {
   const { mode, setMode } = useApiMode();
   return (
-    <header className={styles.header}>
-      <div className={styles.headerInner}>
-        <div className={styles.headerLeft}>
+    <header className="sticky top-0 z-20 bg-white border-b border-gray-200">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            className={`${styles.iconButton} ${!sidebarOpen ? styles.hamburgerVisible : ""}`}
+            className="h-[34px] w-[38px] rounded-lg grid place-items-center border border-gray-200 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
             aria-expanded={sidebarOpen}
             onClick={onToggleSidebar}
           >
-            <span className={styles.hamburger} aria-hidden="true">
-              <span />
-              <span />
-              <span />
+            <span className="relative inline-block w-[18px] h-[14px]" aria-hidden="true">
+              <span className="absolute inset-x-0 top-0 h-0.5 bg-gray-900 rounded"></span>
+              <span className="absolute inset-x-0 top-[6px] h-0.5 bg-gray-900 rounded"></span>
+              <span className="absolute inset-x-0 top-[12px] h-0.5 bg-gray-900 rounded"></span>
             </span>
           </button>
-          <h1 className={styles.appTitle}>Wildlife Monitoring</h1>
+          <h1 className="text-[18px] font-semibold text-slate-900 m-0">Wildlife Monitoring</h1>
         </div>
 
-        <div className={styles.appTheme}>
-          <label htmlFor="apimode-select" style={{ marginRight: 8, color: "#6b7280", fontSize: 12 }}>
+        <div className="text-xs text-gray-500 flex items-center">
+          <label htmlFor="apimode-select" className="mr-2">
             API Mode
           </label>
           <select
             id="apimode-select"
             value={mode}
             onChange={(e) => setMode(e.target.value)}
-            style={{
-              border: "1px solid #E5E7EB",
-              background: "#FFFFFF",
-              borderRadius: 6,
-              padding: "4px 8px",
-              fontSize: 12,
-              color: "#111827",
-            }}
+            className="border border-gray-200 bg-white rounded-md px-2 py-1 text-xs text-gray-900"
           >
             <option value="mock">Mock</option>
             <option value="real">Real</option>

@@ -3,7 +3,7 @@
 This scaffold provides a modular React UI with:
 - Persistent Sidebar navigation on all pages
 - Routed pages: Import, Analysis, Dashboard
-- CSS Modules for styling (no Tailwind)
+- Tailwind CSS utilities for layout and Sidebar styling
 - Responsive, classic "Corporate Navy" theme
 - Modular hooks and contexts for clean separation of concerns
 - API layer to switch between mock and real integrations

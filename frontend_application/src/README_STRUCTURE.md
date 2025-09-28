@@ -1,8 +1,7 @@
 # Source Structure (CSS Modules)
 
-- App.js — App shell and routes
-- AppLayout.module.css — global tokens and app layout
-- styles/global.css — base resets and typography
+- App.js — App shell and routes (Tailwind utilities for layout)
+- styles/global.css — Tailwind directives plus base resets and typography
 
 Core Architecture:
 - api/ — API layer to abstract data sources (mock vs real)

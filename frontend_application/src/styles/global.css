@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Keep minimal global base styles used by the app */
 html, body, #root {
   height: 100%;
 }
@@ -18,4 +23,15 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Visually hidden utility for accessibility (used in file input) */
+.visually-hidden {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
 }

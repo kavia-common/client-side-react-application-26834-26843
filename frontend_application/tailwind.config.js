@@ -1,4 +1,4 @@
- /** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./public/index.html",
@@ -7,15 +7,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#1E3A8A",   // Corporate Navy primary
-        secondary: "#F59E0B", // Gold accent
+        primary: "#1E3A8A",
+        secondary: "#F59E0B",
         success: "#059669",
         error: "#DC2626",
         background: "#F3F4F6",
         surface: "#FFFFFF",
-        text: "#111827",
-      },
-    },
+        text: "#111827"
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };

@@ -29,12 +29,14 @@
   border-radius: 8px;
   box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
   padding: 16px;
+  min-width: 0;
 }
 
 .previewHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .cardTitle {
@@ -55,7 +57,7 @@
 }
 
 .input {
-  width: 80px;
+  width: 88px;
   padding: 6px 8px;
   font-size: 13px;
   border: 1px solid #D1D5DB;
@@ -69,21 +71,109 @@
   aspect-ratio: 16 / 9;
   background: linear-gradient(135deg, rgba(30,58,138,0.08), rgba(245,158,11,0.12));
   border-radius: 8px;
+  overflow: hidden;
   display: grid;
   place-items: center;
   color: #6B7280;
 }
 
-.placeholderText {
-  font-size: 14px;
+.media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #0b1220;
 }
 
-.card {
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.box {
+  position: absolute;
+  border: 2px solid #1E3A8A;
+  border-radius: 6px;
+}
+
+.boxLabel {
+  position: absolute;
+  left: 0;
+  top: -26px;
+  transform: translateY(-2px);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.badge {
+  border-right: 1px solid rgba(255,255,255,0.25);
+  padding-right: 8px;
+}
+
+.conf {
+  letter-spacing: 0.2px;
+}
+
+.sidePanel {
   background: #FFFFFF;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
   box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
   padding: 16px;
+  min-width: 0;
+  height: fit-content;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.listItem {
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 10px;
+  background: #FAFAFB;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.metaLabel {
+  font-weight: 700;
+}
+
+.statePill {
+  color: #111827;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.kvLabel {
+  color: #6B7280;
+}
+
+.kvValue {
+  font-weight: 600;
+  color: #111827;
 }
 
 .muted {
@@ -91,8 +181,20 @@
   font-size: 14px;
 }
 
+.errorText {
+  color: #DC2626;
+  font-size: 14px;
+}
+
 @media (min-width: 1024px) {
   .grid {
     grid-template-columns: 2fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .boxLabel {
+    font-size: 11px;
+    padding: 3px 6px;
   }
 }
